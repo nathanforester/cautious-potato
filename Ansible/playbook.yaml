@@ -1,0 +1,24 @@
+- hosts: deploy
+  become: True
+  tasks:
+
+    - name: update apt cache
+      apt: update_cache=yes
+
+    - name: Install dependencies
+      apt:
+        name: "{{ packages }}"
+        state: present
+        update_cache: yes
+      vars:
+        packages:
+        - pip
+        - pip3
+        - flask
+    
+    - name: create user
+      command: adduser firstUser
+
+    - name: run app
+      command: python3 /home/ubuntu/ansible/app.py
+
